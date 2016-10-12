@@ -212,7 +212,6 @@ def main(args):
 
 def runArgs(args):
 
-    #
     nameOfFileEmg = "%s-%s-%s-emg.csv" % (args.user, (args.letter).capitalize(), args.turn)
     nameOfFileOrientation = "%s-%s-%s-orientation.csv" % (args.user, (args.letter).capitalize(), args.turn)
     nameOfFileAccelerometor = "%s-%s-%s-acc.csv" % (args.user, (args.letter).capitalize(), args.turn)

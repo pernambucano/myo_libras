@@ -1,0 +1,1264 @@
+Last login: Tue Oct 11 15:05:02 on ttys000
+➜  ~ cd Documents/Dev/TG/myo_libras 
+➜  myo_libras git:(master) ✗ ls
+__init__.py      libras_myo       requirements.txt
+➜  myo_libras git:(master) ✗ libras_myo 
+➜  libras_myo git:(master) ✗ ls
+__init__.py        data_segmented_cut printGraph.py      segmentData.py
+data               myo-python         receiveData.py     teste.png
+data_segmented     pictures           sdk                venv
+➜  libras_myo git:(master) ✗ python receiveData.py 
+usage: receiveData.py [-h] user letter turn
+receiveData.py: error: too few arguments
+➜  libras_myo git:(master) ✗ python receiveData.py -h
+usage: receiveData.py [-h] user letter turn
+
+positional arguments:
+  user        The name of the user.
+  letter      The letter the user is doing.
+  turn        The number of the turn.
+
+optional arguments:
+  -h, --help  show this help message and exit
+➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras 1
+Traceback (most recent call last):
+  File "receiveData.py", line 238, in <module>
+    main(args)
+  File "receiveData.py", line 202, in main
+    libmyo.init()
+  File "/Library/Python/2.7/site-packages/myo/lowlevel/ctyping.py", line 119, in init
+    self._lib = ctypes.cdll.LoadLibrary(lib_name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 440, in LoadLibrary
+    return self._dlltype(name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 362, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: dlopen(myo, 6): image not found
+➜  libras_myo git:(master) ✗ source venv/bin/activate
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras 1
+Traceback (most recent call last):
+  File "receiveData.py", line 238, in <module>
+    main(args)
+  File "receiveData.py", line 202, in main
+    libmyo.init()
+  File "/Library/Python/2.7/site-packages/myo/lowlevel/ctyping.py", line 119, in init
+    self._lib = ctypes.cdll.LoadLibrary(lib_name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 440, in LoadLibrary
+    return self._dlltype(name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 362, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: dlopen(myo, 6): image not found
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras 1
+Traceback (most recent call last):
+  File "receiveData.py", line 238, in <module>
+    main(args)
+  File "receiveData.py", line 202, in main
+    libmyo.init()
+  File "/Library/Python/2.7/site-packages/myo/lowlevel/ctyping.py", line 119, in init
+    self._lib = ctypes.cdll.LoadLibrary(lib_name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 440, in LoadLibrary
+    return self._dlltype(name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 362, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: dlopen(myo, 6): image not found
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras 1
+Traceback (most recent call last):
+  File "receiveData.py", line 226, in <module>
+    main(args)
+  File "receiveData.py", line 190, in main
+    libmyo.init()
+  File "/Library/Python/2.7/site-packages/myo/lowlevel/ctyping.py", line 119, in init
+    self._lib = ctypes.cdll.LoadLibrary(lib_name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 440, in LoadLibrary
+    return self._dlltype(name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 362, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: dlopen(myo, 6): image not found
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras de1
+Traceback (most recent call last):
+  File "receiveData.py", line 226, in <module>
+    main(args)
+  File "receiveData.py", line 190, in main
+    libmyo.init()
+  File "/Library/Python/2.7/site-packages/myo/lowlevel/ctyping.py", line 119, in init
+    self._lib = ctypes.cdll.LoadLibrary(lib_name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 440, in LoadLibrary
+    return self._dlltype(name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 362, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: dlopen(myo, 6): image not found
+(venv) ➜  libras_myo git:(master) ✗ deactivate
+➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras de1
+Traceback (most recent call last):
+  File "receiveData.py", line 226, in <module>
+    main(args)
+  File "receiveData.py", line 190, in main
+    libmyo.init()
+  File "/Library/Python/2.7/site-packages/myo/lowlevel/ctyping.py", line 119, in init
+    self._lib = ctypes.cdll.LoadLibrary(lib_name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 440, in LoadLibrary
+    return self._dlltype(name)
+  File "/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 362, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: dlopen(myo, 6): image not found
+➜  libras_myo git:(master) ✗ rm -rf venv
+➜  libras_myo git:(master) ✗ virtualenv venv
+New python executable in /Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/bin/python
+Installing setuptools, pip, wheel...done.
+➜  libras_myo git:(master) ✗ source venv/bin/activate
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras de1
+Traceback (most recent call last):
+  File "receiveData.py", line 2, in <module>
+    import myo as libmyo
+ImportError: No module named myo
+(venv) ➜  libras_myo git:(master) ✗ pip install myo
+Collecting myo
+  Downloading myo-0.19.2.tar.gz (40kB)
+    100% |████████████████████████████████| 40kB 315kB/s 
+Collecting ribosome>=9.9.0 (from myo)
+  Downloading ribosome-9.9.1.tar.gz
+Collecting amino>=8.8.0 (from myo)
+  Downloading amino-8.8.0.tar.gz
+Collecting libtmux (from myo)
+  Downloading libtmux-0.6.0.tar.gz
+Collecting psutil (from myo)
+  Downloading psutil-4.3.1.tar.gz (315kB)
+    100% |████████████████████████████████| 317kB 697kB/s 
+Collecting networkx (from myo)
+  Downloading networkx-1.11-py2.py3-none-any.whl (1.3MB)
+    100% |████████████████████████████████| 1.3MB 430kB/s 
+Collecting neovim (from ribosome>=9.9.0->myo)
+  Downloading neovim-0.1.10.tar.gz
+Collecting pyrsistent (from ribosome>=9.9.0->myo)
+  Downloading pyrsistent-0.11.13.tar.gz (89kB)
+    100% |████████████████████████████████| 92kB 761kB/s 
+Collecting fn (from amino>=8.8.0->myo)
+  Downloading fn-0.4.3.tar.gz
+Collecting toolz (from amino>=8.8.0->myo)
+  Downloading toolz-0.8.0.tar.gz (40kB)
+    100% |████████████████████████████████| 40kB 1.2MB/s 
+Collecting lenses (from amino>=8.8.0->myo)
+  Downloading lenses-0.1.7.tar.gz
+Collecting decorator>=3.4.0 (from networkx->myo)
+  Using cached decorator-4.0.10-py2.py3-none-any.whl
+Collecting msgpack-python>=0.4.0 (from neovim->ribosome>=9.9.0->myo)
+  Downloading msgpack-python-0.4.8.tar.gz (113kB)
+    100% |████████████████████████████████| 122kB 737kB/s 
+Collecting trollius (from neovim->ribosome>=9.9.0->myo)
+  Downloading trollius-2.1.tar.gz (276kB)
+    100% |████████████████████████████████| 276kB 427kB/s 
+Collecting greenlet (from neovim->ribosome>=9.9.0->myo)
+  Downloading greenlet-0.4.10.zip (82kB)
+    100% |████████████████████████████████| 92kB 958kB/s 
+Collecting six (from pyrsistent->ribosome>=9.9.0->myo)
+  Using cached six-1.10.0-py2.py3-none-any.whl
+Collecting futures (from trollius->neovim->ribosome>=9.9.0->myo)
+  Downloading futures-3.0.5-py2-none-any.whl
+Building wheels for collected packages: myo, ribosome, amino, libtmux, psutil, neovim, pyrsistent, fn, toolz, lenses, msgpack-python, trollius, greenlet
+  Running setup.py bdist_wheel for myo ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/75/f4/4d/00a6dc06ef54b3fa7ecac2187c12de518711bba4f46c582a32
+  Running setup.py bdist_wheel for ribosome ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/37/c6/ab/0b3af439464c0f6009f9e86452ae82da4f601164caf80fc5de
+  Running setup.py bdist_wheel for amino ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/92/79/22/9056b96712fe21ec5563b4ce59355bbd9cd7d476115b5a478e
+  Running setup.py bdist_wheel for libtmux ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/b1/67/78/3c07d69f9fd8c6ad143626b1325ff85e400152f65a169e05d3
+  Running setup.py bdist_wheel for psutil ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/e1/45/d0/ddea1473c0c0ae85a4c05d72ad8bea60e0d1852367fe46e5b5
+  Running setup.py bdist_wheel for neovim ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/3b/6f/7e/a37f10817e6d70c00338bd3fad563c07cd7efc5f722cb26b98
+  Running setup.py bdist_wheel for pyrsistent ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/ad/5d/e8/52e6872ffebc4739804cec0ce4e50c6f1227271364736ee6ce
+  Running setup.py bdist_wheel for fn ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/ec/0b/f1/2e09d08831712bc4d4dd920ea1c966ebbca788264b0dda4dde
+  Running setup.py bdist_wheel for toolz ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/b0/84/bf/7089262387e8ea60bdefb1fdb84d2ee99427f6d09c9c7ba37d
+  Running setup.py bdist_wheel for lenses ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/90/35/22/74ffcb07aa92ce59739a5bee7f7358e6d2ecc71ce2c60b456b
+  Running setup.py bdist_wheel for msgpack-python ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/2c/e7/e7/9031652a69d594665c5ca25e41d0fb3faa024e730b590e4402
+  Running setup.py bdist_wheel for trollius ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/2f/dc/eb/757af8db778f9ea034d8e25c928db1e8b04f299b217889696d
+  Running setup.py bdist_wheel for greenlet ... done
+  Stored in directory: /Users/paulo/Library/Caches/pip/wheels/e0/f2/33/6e4a562e7497e9393110f64fee640f5bc9eefdd82c02b035b1
+Successfully built myo ribosome amino libtmux psutil neovim pyrsistent fn toolz lenses msgpack-python trollius greenlet
+Installing collected packages: fn, toolz, lenses, amino, msgpack-python, six, futures, trollius, greenlet, neovim, pyrsistent, ribosome, libtmux, psutil, decorator, networkx, myo
+Successfully installed amino-8.8.0 decorator-4.0.10 fn-0.4.3 futures-3.0.5 greenlet-0.4.10 lenses-0.1.7 libtmux-0.6.0 msgpack-python-0.4.8 myo-0.19.2 neovim-0.1.10 networkx-1.11 psutil-4.3.1 pyrsistent-0.11.13 ribosome-9.9.1 six-1.10.0 toolz-0.8.0 trollius-2.1
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla todas_as_letras de1
+Traceback (most recent call last):
+  File "receiveData.py", line 14, in <module>
+    class Listener(libmyo.DeviceListener):
+AttributeError: 'module' object has no attribute 'DeviceListener'
+(venv) ➜  libras_myo git:(master) ✗ pip install six
+Requirement already satisfied (use --upgrade to upgrade): six in ./venv/lib/python2.7/site-packages
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py -h                    Traceback (most recent call last):
+  File "receiveData.py", line 14, in <module>
+    class Listener(libmyo.DeviceListener):
+AttributeError: 'module' object has no attribute 'DeviceListener'
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py -h
+Traceback (most recent call last):
+  File "receiveData.py", line 14, in <module>
+    class Listener(libmyo.DeviceListener):
+AttributeError: 'module' object has no attribute 'DeviceListener'
+(venv) ➜  libras_myo git:(master) ✗ pip install myo-python      
+Collecting myo-python
+Requirement already satisfied (use --upgrade to upgrade): six in ./venv/lib/python2.7/site-packages (from myo-python)
+Installing collected packages: myo-python
+Successfully installed myo-python-0.2.2
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py -h
+usage: receiveData.py [-h] user letter turn
+
+positional arguments:
+  user        The name of the user.
+  letter      The letter the user is doing.
+  turn        The number of the turn.
+
+optional arguments:
+  -h, --help  show this help message and exit
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py testando a 1
+Traceback (most recent call last):
+  File "receiveData.py", line 226, in <module>
+    main(args)
+  File "receiveData.py", line 190, in main
+    libmyo.init()
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 119, in init
+    self._lib = ctypes.cdll.LoadLibrary(lib_name)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 443, in LoadLibrary
+    return self._dlltype(name)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ctypes/__init__.py", line 365, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: dlopen(myo, 6): image not found
+(venv) ➜  libras_myo git:(master) ✗ deactivate
+➜  libras_myo git:(master) ✗ brew install myo-python
+==> Auto-updated Homebrew!
+Updated 1 tap (homebrew/core).
+==> Updated Formulae
+ldns
+
+Error: No available formula with the name "myo-python" 
+==> Searching for similarly named formulae...
+Error: No similarly named formulae found.
+==> Searching taps...
+^C
+➜  libras_myo git:(master) ✗ export DYLD_LIBRARY_PATH=$DYDL_LIBRARY_PATH:/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/sdk/myo.framework
+➜  libras_myo git:(master) ✗ python receiveData.py testando a 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+➜  libras_myo git:(master) ✗ source venv/bin/activate
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py testando a 12
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla alfabeto_inteiro 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla alfabeto_inteiro 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla alfabeto_inteiro 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla alfabeto_inteiro 4
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla a_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla a_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla a_perto_cotovelo 2_1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla a_perto_cotovelo 3 
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla b_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla b_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla b_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla c_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla c_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla c_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla d_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla d_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla d_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla e_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla e_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla e_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla f_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla f_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla f_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla g_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla g_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla g_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla h_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla h_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla h_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla i_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla i_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla i_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla k_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla k_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla k_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla l_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla l_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla l_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla m_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla m_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla m_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla n_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla n_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla n_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla o_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla o_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+[1]    8237 segmentation fault  python receiveData.py karla o_perto_cotovelo 2
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla o_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla p_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla p_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla p_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla q_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla q_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla q_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla r_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla r_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla r_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla s_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla s_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla s_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla t_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla t_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla t_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla u_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla u_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla u_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla v_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla v_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla v_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla w_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla w_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla w_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla x_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla x_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla x_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla y_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+ç^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla y_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla y_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla z_perto_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla z_perto_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla z_perto_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla alfabeto_inteiro_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla alfabeto_inteiro_pulso 1_1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla alfabeto_inteiro_pulso 2  
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla h_pulso 1               
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla h_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla h_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_pulso 2_1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_pulso 3  
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla j_pulso 3_1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla x_pulso 1  
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla x_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla x_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla y_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla y_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla y_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla z_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla z_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla z_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 0_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 0_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 0_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 1_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 1_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 1_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 2_pulso 1 
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 2_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 2_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 3_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 3_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 3_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 4_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 4_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 4_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 5_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 5_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 5_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 6_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 6_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 6_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 7_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 7_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 7_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 8_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 8_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 8_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 9_pulso 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 9_pulso 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 9_pulso 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 0_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 0_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 0_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 1_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 1_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 1_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 2_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 2_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 2_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 3_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 3_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 3_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 4_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 4_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 4_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 5_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 5_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 5_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 6_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^[[A^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 6_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 6_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 7_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 7_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 7_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 8_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 8_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^Ccreate argument 1:
+Traceback (most recent call last):
+  File "/Users/paulo/Documents/Dev/TG/myo_libras/libras_myo/venv/lib/python2.7/site-packages/myo/lowlevel/ctyping.py", line 146, in __init__
+    def __init__(self, *args, **kwargs):
+KeyboardInterrupt
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 8_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 9_cotovelo 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 9_cotovelo 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla 9_cotovelo 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla teste_mao_esticada 1
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla teste_mao_esticada 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla teste_mao_esticada 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla teste_sem_usuario 1 
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla teste_sem_usuario 2
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ python receiveData.py karla teste_sem_usuario 3
+Connecting to Myo ... Use CTRL^C to exit.
+^C
+Quitting ...
+Shutting down hub...
+(venv) ➜  libras_myo git:(master) ✗ 

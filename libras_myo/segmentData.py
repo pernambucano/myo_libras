@@ -23,11 +23,11 @@ TODO:
     * Calcular proporção segundo o paper
 """
 #
-WINDOW_SIZE = 10 # TODO: Definir
+WINDOW_SIZE = 20 # TODO: Definir
 WINDOW_STEP = 5 # TODO: Definir
-INPUT_FILENAME = "data/letra_a.csv"
-OUTPUT_FILENAME = "data/letra_a_segmented.csv"
-OUTPUT_FILENAME_CUT = "data/letra_a_segmented_cut.csv"
+INPUT_FILENAME = "data/paulo/paulo-A-1-emg.csv"
+OUTPUT_FILENAME = "data_segmented/paulo-A-1-emg-segmented.csv"
+OUTPUT_FILENAME_CUT = "data_segmented_cut/paulo-A-1-emg-segmented-cut.csv"
 TR =  135 # twenty percent of the mean of the EW(t) of the signer’s maximal voluntary contraction.
 
 
@@ -47,7 +47,7 @@ def calculateSegmentedSignal(segmentedData):
 
     # print start, end
     result = addTRBeforeAndAfter(segmentedData[start:end+1])
-    # writeDataInFile(result, OUTPUT_FILENAME_CUT)
+    writeDataInFile(result, OUTPUT_FILENAME_CUT)
     return result
 
 def addTRBeforeAndAfter(sequence):
@@ -121,14 +121,12 @@ def calculateAndSaveWindowValuesOfSensorInArray(windows):
     dataWindowsSensorArray = []
     for window in windows:
         valueOfWindow = calculateValueOfWindow(window)
-
-        # save valueOfWindow in array
-        # dataWindowsSensorArray = np.append(dataWindowsSensorArray, valueOfWindow)
-        dataWindowsSensorArray.append(valueOfWindow)
+        dataWindowsSensorArray.append(valueOfWindow) # save valueOfWindow in array
     return dataWindowsSensorArray
 
 def readCsv():
     data = np.genfromtxt(INPUT_FILENAME, delimiter=',', dtype=None)
+    data = data[:, 1:] # We are not using the timestamp at this time
     return data
 
 def getDataForSensor(sensorNumber, dataMatrix):
@@ -187,4 +185,5 @@ def printGraphTest(sequence):
 if __name__ == '__main__':
     data = readCsv()
     results = calculateValuesForAllSensors(data)
-    printGraphTest(calculateSegmentedSignal(results))
+    calculateSegmentedSignal(results)
+    # printGraphTest(calculateSegmentedSignal(results))
