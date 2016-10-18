@@ -6,39 +6,15 @@ import csv
 import matplotlib.pyplot as plt
 
 
-"""
-TODO:
-    * Receber dados (ok)
-    * Dividir dado por sensor (ok)
-    * Dividir em janelas (ok)
-    * Calcular valores pra cada janela (ok)
-    * Calcular valores de todas as janelas pra um sensor (ok)
-    * Calcular valores para todos os sensores juntos (ok)
-    * Salvar dados em arquivo (ok)
-    * Definir o tamanho da janela
-    * Definir se é necessário "te - ts + 1 > 8"
-    * Colar te e ts ao TR (ok)
-    * Criar código pra printar os grafos
-    * Criar codigo pra pegar os dados mais facilmente
-    * Calcular proporção segundo o paper
-"""
-#
-WINDOW_SIZE = 16  # 150 ms
-WINDOW_STEP = 8  # 75 ms
+WINDOW_SIZE = 16  # 80 ms
+WINDOW_STEP = 8  # 50 ms
 INPUT_FILENAME = "data/karla/karla-A_perto_cotovelo-1-emg.csv"
 OUTPUT_FILENAME = "data_segmented/karla-A_perto_cotovelo-1-emg-segmented.csv"
 OUTPUT_FILENAME_CUT = "data_segmented_cut/karla-A_perto_cotovelo-1-emg-segmented-cut.csv"
-# twenty percent of the mean of the EW(t) of the signer’s maximal
+
+# TR = twenty percent of the mean of the EW(t) of the signer’s maximal
 # voluntary contraction.
-TR = 135
-
-
-# Calculate the beginning and the end of the signal
-# TODO: Testar possibilidade de "te - ts + 1 > N"
-startWindow = 0
-
-
-def segmentSignal(averagedEmg):
+def segmentSignal(averagedEmg, TR=135):
     data = averagedEmg
     listSize = len(data)
 
@@ -75,7 +51,7 @@ def segmentSignal(averagedEmg):
         else:
             beforeCounter += 1
 
-    # get the sequence corresponding to the letter
+    # get the sequence corresponding to the letter by getting the biggest Difference
     startLetter = 0
     endLetter = 0
     biggestDifference = 0
@@ -86,9 +62,7 @@ def segmentSignal(averagedEmg):
             startLetter = start
             endLetter = end
 
-    # print averagedEmg[startLetter:endLetter + 1]
-
-    writeDataInFile(data[startLetter:endLetter + 1], OUTPUT_FILENAME_CUT)
+    # writeDataInFile(data[startLetter:endLetter + 1], OUTPUT_FILENAME_CUT)
     return data[startLetter:endLetter + 1]
 
 # Calculate the Average Energy of the 8 Sensors
@@ -114,9 +88,8 @@ def calculateAverageEnergy(data):
     sensorsWindowsValuesArrayResult = map(
         (lambda y: y / 8), sensorsWindowsValuesArraySumed)
 
-    # Change this to save in a csv file
-    print sensorsWindowsValuesArrayResult
-    writeDataInFile(sensorsWindowsValuesArrayResult)
+
+    # writeDataInFile(sensorsWindowsValuesArrayResult)
     return sensorsWindowsValuesArrayResult
 
 
@@ -135,7 +108,8 @@ def calculateValueOfWindow(window):
     counter = 1
 
     for x in window:
-        valueWindow += pow(x, 2)
+        valueWindow += pow(x, 2) # maybe it would be useful to sum
+                                 # before use the exponential
         counter += 1
 
     return (valueWindow / counter)
@@ -150,8 +124,9 @@ def calculateAndSaveWindowValuesOfSensorInArray(windows):
     return dataWindowsSensorArray
 
 
-def readCsv():
-    data = np.genfromtxt(INPUT_FILENAME, delimiter=',', dtype=None)
+def readCsv(inputFileName=INPUT_FILENAME):
+
+    data = np.genfromtxt(inputFileName, delimiter=',', dtype=None)
     data = data[:, 1:]  # We are not using the timestamp at this time
     return data
 
@@ -214,4 +189,3 @@ if __name__ == '__main__':
     results = calculateAverageEnergy(data)
     segmented = segmentSignal(results)
     # printGraphTest(segmented)
-    # segmentSignal([1000, 10, 10, 149, 151, 552])
