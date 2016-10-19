@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 
-from segmentData import calculateAverageEnergy, segmentSignal, readCsv, writeDataInFile
+from segmentData import calculateAverageEnergy, segmentAveragedSignal, readCsv, writeDataInFile, segmentSensorsData
 import numpy as np
 import csv
 from printGraph import printGraph
@@ -66,18 +66,24 @@ def segmentFiles():
         averageEmgD = calculateAverageEnergy(data_d)
         averageEmgE = calculateAverageEnergy(data_e)
 
-        if turn == 3:
-            # print averageEmgA
-            # printGraph(averageEmgA)
-            pass
 
-        segmentedA = segmentSignal(averageEmgA, threshold)
-        segmentedB = segmentSignal(averageEmgB, threshold)
-        segmentedC = segmentSignal(averageEmgC, threshold)
-        segmentedD = segmentSignal(averageEmgD, threshold)
-        segmentedE = segmentSignal(averageEmgE, threshold)
+        startOfLetterA, endOfLetterA = segmentAveragedSignal(averageEmgA, threshold)
+        startOfLetterB, endOfLetterB = segmentAveragedSignal(averageEmgB, threshold)
+        startOfLetterC, endOfLetterC = segmentAveragedSignal(averageEmgC, threshold)
+        startOfLetterD, endOfLetterD = segmentAveragedSignal(averageEmgD, threshold)
+        startOfLetterE, endOfLetterE = segmentAveragedSignal(averageEmgE, threshold)
 
-        # Save data in specific folder
+
+
+        data_a_segmented = segmentSensorsData(data_a, startOfLetterA, endOfLetterA)
+        data_b_segmented = segmentSensorsData(data_b, startOfLetterB, endOfLetterB)
+        data_c_segmented = segmentSensorsData(data_c, startOfLetterC, endOfLetterC)
+        data_d_segmented = segmentSensorsData(data_d, startOfLetterD, endOfLetterD)
+        data_e_segmented = segmentSensorsData(data_e, startOfLetterE, endOfLetterE)
+        # printGraph(data_a_segmented)
+
+
+        # # Save data in specific folder
         pathA = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "karla-A_perto_cotovelo", turn)
         pathB = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "karla-B_perto_cotovelo", turn)
         pathC = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "karla-C_perto_cotovelo", turn)
@@ -85,11 +91,11 @@ def segmentFiles():
         pathE = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "karla-E_perto_cotovelo", turn)
 
 
-        writeDataInFile(segmentedA, pathA)
-        writeDataInFile(segmentedB, pathB)
-        writeDataInFile(segmentedC, pathC)
-        writeDataInFile(segmentedD, pathD)
-        writeDataInFile(segmentedE, pathE)
+        writeDataInFile(data_a_segmented, pathA)
+        writeDataInFile(data_b_segmented, pathB)
+        writeDataInFile(data_c_segmented, pathC)
+        writeDataInFile(data_d_segmented, pathD)
+        writeDataInFile(data_e_segmented, pathE)
 
 
 if __name__ == '__main__':

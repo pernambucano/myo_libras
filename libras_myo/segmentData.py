@@ -12,9 +12,35 @@ INPUT_FILENAME = "data/karla/karla-A_perto_cotovelo-1-emg.csv"
 OUTPUT_FILENAME = "data_segmented/karla-A_perto_cotovelo-1-emg-segmented.csv"
 OUTPUT_FILENAME_CUT = "data_segmented_cut/karla-A_perto_cotovelo-1-emg-segmented-cut.csv"
 
+
+
+def segmentSensorsData(data, start, end):
+    """
+        Input: data from all sensors, start window, end window
+        Output: data segmented
+    """
+    startIndex = (start - 1) * WINDOW_STEP # Beginning of start window
+    endIndex = end * (WINDOW_STEP + 1) # Ending of end window
+
+    print startIndex, endIndex
+    result = []
+    for sensorNumber in xrange(8):
+        sensorData = getDataForSensor(sensorNumber, data)
+        dataOfLetter = sensorData[startIndex:endIndex].tolist()
+        result.append(dataOfLetter)
+
+    print np.array(result).T.tolist()
+    return np.array(result).T.tolist()
+
 # TR = twenty percent of the mean of the EW(t) of the signer’s maximal
 # voluntary contraction.
-def segmentSignal(averagedEmg, TR=135):
+def segmentAveragedSignal(averagedEmg, TR=135):
+    """
+        Input: average emg, threshold
+        Output: index number of the first window delimiting the letter,
+                index number of the last window delimiting the letter
+    """
+
     data = averagedEmg
     listSize = len(data)
 
@@ -52,18 +78,19 @@ def segmentSignal(averagedEmg, TR=135):
             beforeCounter += 1
 
     # get the sequence corresponding to the letter by getting the biggest Difference
-    startLetter = 0
-    endLetter = 0
+    startOfLetter = 0
+    endOfLetter = 0
     biggestDifference = 0
 
     for start, end in mList:
         if (end - start) > biggestDifference:
             biggestDifference = end - start
-            startLetter = start
-            endLetter = end
+            startOfLetter = start
+            endOfLetter = end
 
     # writeDataInFile(data[startLetter:endLetter + 1], OUTPUT_FILENAME_CUT)
-    return data[startLetter:endLetter + 1]
+    # return data[startOfLetter:endOfLetter + 1]
+    return startOfLetter, endOfLetter
 
 # Calculate the Average Energy of the 8 Sensors
 def calculateAverageEnergy(data):
@@ -75,7 +102,7 @@ def calculateAverageEnergy(data):
     allSensorsWindowsValues = []
     for sensorNumber in range(8):
         sensorData = getDataForSensor(sensorNumber, data)
-        arrayOfWindows = transformSensorDataIntoArrayOfWindows(sensorData)
+        arrayOfWindows = transformDataIntoWindows(sensorData)
         arrayOfWindowValues = calculateAndSaveWindowValuesOfSensorInArray(
             arrayOfWindows)
         allSensorsWindowsValues.append(arrayOfWindowValues)
@@ -93,7 +120,7 @@ def calculateAverageEnergy(data):
     return sensorsWindowsValuesArrayResult
 
 
-def transformSensorDataIntoArrayOfWindows(sensorData):
+def transformDataIntoWindows(sensorData):
     windowsArray = []
     windows = slidingWindow(sensorData)
 
@@ -139,7 +166,7 @@ def writeDataInFile(data, output_filename=OUTPUT_FILENAME):
     with open(output_filename, 'wb') as outputFile:
         writer = csv.writer(outputFile)
         for i in data:
-            writer.writerow([i])
+            writer.writerow(i)
 
 
 # slidingWindow
