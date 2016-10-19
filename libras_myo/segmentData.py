@@ -17,19 +17,18 @@ OUTPUT_FILENAME_CUT = "data_segmented_cut/karla-A_perto_cotovelo-1-emg-segmented
 def segmentSensorsData(data, start, end):
     """
         Input: data from all sensors, start window, end window
-        Output: data segmented
+        Output: sensors data segmented
     """
     startIndex = (start - 1) * WINDOW_STEP # Beginning of start window
     endIndex = end * (WINDOW_STEP + 1) # Ending of end window
 
-    print startIndex, endIndex
+    # print startIndex, endIndex
     result = []
     for sensorNumber in xrange(8):
         sensorData = getDataForSensor(sensorNumber, data)
         dataOfLetter = sensorData[startIndex:endIndex].tolist()
         result.append(dataOfLetter)
 
-    print np.array(result).T.tolist()
     return np.array(result).T.tolist()
 
 # TR = twenty percent of the mean of the EW(t) of the signer’s maximal
