@@ -11,20 +11,28 @@ from classification import classify
 
 
 user = "paulo"
-INPUT_TEST_WITHOUT_USER = "data/%s/%s-Teste_sem_usuario" % (user, user)# 3 x
-INPUT_TEST_TR = "data/%s/%s-Teste_mao_esticada"  % (user, user)# 3 x
-INPUT_A = "data/%s/%s-A_perto_cotovelo" % (user, user) # x 3
-INPUT_B = "data/%s/%s-B_perto_cotovelo"  % (user, user)# x 3
-INPUT_C = "data/%s/%s-C_perto_cotovelo"  % (user, user)# x 3
-INPUT_D = "data/%s/%s-D_perto_cotovelo"  % (user, user)# x 3
-INPUT_E = "data/%s/%s-E_perto_cotovelo"  % (user, user)# x 3
+INPUT_TEST_WITHOUT_USER = "data/%s/%s-Teste_sem_usuario" % (user, user)  # 3 x
+INPUT_TEST_TR = "data/%s/%s-Teste_mao_esticada" % (user, user)  # 3 x
+INPUT_A = "data/%s/%s-A_perto_cotovelo" % (user, user)  # x 3
+INPUT_B = "data/%s/%s-B_perto_cotovelo" % (user, user)  # x 3
+INPUT_C = "data/%s/%s-C_perto_cotovelo" % (user, user)  # x 3
+INPUT_D = "data/%s/%s-D_perto_cotovelo" % (user, user)  # x 3
+INPUT_E = "data/%s/%s-E_perto_cotovelo" % (user, user)  # x 3
 OUTPUT = "data_segmented/%s" % user
 
-INPUT_A_SEGMENTED = "data_segmented/%s/%s-A_perto_cotovelo"  % (user, user)
+
+INPUT_A_SEGMENTED = "data_segmented/%s/%s-A_perto_cotovelo" % (user, user)
 INPUT_B_SEGMENTED = "data_segmented/%s/%s-B_perto_cotovelo" % (user, user)
 INPUT_C_SEGMENTED = "data_segmented/%s/%s-C_perto_cotovelo" % (user, user)
 INPUT_D_SEGMENTED = "data_segmented/%s/%s-D_perto_cotovelo" % (user, user)
 INPUT_E_SEGMENTED = "data_segmented/%s/%s-E_perto_cotovelo" % (user, user)
+
+
+letters = ['A', 'B', 'C', 'D', 'E']
+users = ['karla', 'paulo']
+directory = "data"
+directorySegmented = "data_segmented"
+desc = "perto_cotovelo"
 
 
 def readCsvSegmented(inputFileName):
@@ -33,118 +41,69 @@ def readCsvSegmented(inputFileName):
     return data
 
 
-def calculateTreshold():
+def calculateTreshold(user):
     meanAveragedEmg = 0
-    for turn in xrange(1,4):
-        input_test_tr_complete = '%s-%d-emg.csv' % (INPUT_TEST_TR, turn)
-        data = readCsv(input_test_tr_complete)
+    for turn in xrange(1, 4):
+        # input_test_tr_complete = '%s-%d-emg.csv' % (INPUT_TEST_TR, turn)
+        path = "%s/%s/%s-Teste_mao_esticada-%s-emg.csv" % (directory, user, user, turn)
+        print path
+        data = readCsv(path)
         averagedEmg = calculateAverageEnergy(data)
-        # print averagedEmg
-        # print np.amax(averagedEmg)
         meanAveragedEmg += np.amax(averagedEmg)
-
 
     meanAveragedEmg = meanAveragedEmg / 3
     threshold = meanAveragedEmg * 0.05
-    # print threshold
     return threshold
+
 
 def segmentFiles():
 
-    threshold = calculateTreshold()
 
-    for turn in xrange(1,4):
-        input_a_complete = '%s-%d-emg.csv' % (INPUT_A, turn)
-        input_b_complete = '%s-%d-emg.csv' % (INPUT_B, turn)
-        input_c_complete = '%s-%d-emg.csv' % (INPUT_C, turn)
-        input_d_complete = '%s-%d-emg.csv' % (INPUT_D, turn)
-        input_e_complete = '%s-%d-emg.csv' % (INPUT_E, turn)
+    for user in users:
+        threshold = calculateTreshold(user) # Calcula o  threshold de cada usuário
+        for turn in xrange(1, 4):
+            for letter in letters:
+                path = "%s/%s/%s-%s_%s-%s-emg.csv" % (directory, user, user, letter, desc, turn)
 
-        # Get data
-        data_a = readCsv(input_a_complete)
-        data_b = readCsv(input_b_complete)
-        data_c = readCsv(input_c_complete)
-        data_d = readCsv(input_d_complete)
-        data_e = readCsv(input_e_complete)
+                print path
 
-        # Segment Data by Average EMG
-        averageEmgA = calculateAverageEnergy(data_a)
-        averageEmgB = calculateAverageEnergy(data_b)
-        averageEmgC = calculateAverageEnergy(data_c)
-        averageEmgD = calculateAverageEnergy(data_d)
-        averageEmgE = calculateAverageEnergy(data_e)
+                # Get data
+                data = readCsv(path)
 
+                # Segment Data by Average EMG
+                averageEmg = calculateAverageEnergy(data)
 
-        startOfLetterA, endOfLetterA = segmentAveragedSignal(averageEmgA, threshold)
-        startOfLetterB, endOfLetterB = segmentAveragedSignal(averageEmgB, threshold)
-        startOfLetterC, endOfLetterC = segmentAveragedSignal(averageEmgC, threshold)
-        startOfLetterD, endOfLetterD = segmentAveragedSignal(averageEmgD, threshold)
-        startOfLetterE, endOfLetterE = segmentAveragedSignal(averageEmgE, threshold)
+                startOfLetter, endOfLetter = segmentAveragedSignal(
+                averageEmg, threshold)
 
+                data_segmented = segmentSensorsData(
+                data, startOfLetter, endOfLetter)
 
+                # # Save data in specific folder
+                path_segmented = "%s/%s/%s-%s_%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, desc, turn)
 
-        data_a_segmented = segmentSensorsData(data_a, startOfLetterA, endOfLetterA)
-        data_b_segmented = segmentSensorsData(data_b, startOfLetterB, endOfLetterB)
-        data_c_segmented = segmentSensorsData(data_c, startOfLetterC, endOfLetterC)
-        data_d_segmented = segmentSensorsData(data_d, startOfLetterD, endOfLetterD)
-        data_e_segmented = segmentSensorsData(data_e, startOfLetterE, endOfLetterE)
-        # printGraph(data_a_segmented)
+                writeDataInFile(data, path_segmented)
 
-
-        # # Save data in specific folder
-        pathA = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "paulo-A_perto_cotovelo", turn)
-        pathB = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "paulo-B_perto_cotovelo", turn)
-        pathC = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "paulo-C_perto_cotovelo", turn)
-        pathD = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "paulo-D_perto_cotovelo", turn)
-        pathE = '%s/%s-%d-emg-segmented.csv' % (OUTPUT, "paulo-E_perto_cotovelo", turn)
-
-
-        writeDataInFile(data_a_segmented, pathA)
-        writeDataInFile(data_b_segmented, pathB)
-        writeDataInFile(data_c_segmented, pathC)
-        writeDataInFile(data_d_segmented, pathD)
-        writeDataInFile(data_e_segmented, pathE)
 
 def getAttributes():
 
     dataset = []
-    for turn in xrange(1,4):
-        input_a_complete_k = '%s-%d-emg-segmented.csv' % ("data_segmented/karla/karla-A_perto_cotovelo", turn)
-        input_b_complete_k = '%s-%d-emg-segmented.csv' % ("data_segmented/karla/karla-B_perto_cotovelo", turn)
-        input_c_complete_k = '%s-%d-emg-segmented.csv' % ("data_segmented/karla/karla-C_perto_cotovelo", turn)
-        input_d_complete_k = '%s-%d-emg-segmented.csv' % ("data_segmented/karla/karla-D_perto_cotovelo", turn)
-        input_e_complete_k = '%s-%d-emg-segmented.csv' % ("data_segmented/karla/karla-E_perto_cotovelo", turn)
-        input_a_complete_p = '%s-%d-emg-segmented.csv' % ("data_segmented/paulo/paulo-A_perto_cotovelo", turn)
-        input_b_complete_p = '%s-%d-emg-segmented.csv' % ("data_segmented/paulo/paulo-B_perto_cotovelo", turn)
-        input_c_complete_p = '%s-%d-emg-segmented.csv' % ("data_segmented/paulo/paulo-C_perto_cotovelo", turn)
-        input_d_complete_p = '%s-%d-emg-segmented.csv' % ("data_segmented/paulo/paulo-D_perto_cotovelo", turn)
-        input_e_complete_p = '%s-%d-emg-segmented.csv' % ("data_segmented/paulo/paulo-E_perto_cotovelo", turn)
+    for user in users:
+        for turn in xrange(1, 4):
+            classLetter = 0
+            for letter in letters:
 
-        # Get data
-        data_a_k = readCsvSegmented(input_a_complete_k)
-        data_b_k = readCsvSegmented(input_b_complete_k)
-        data_c_k = readCsvSegmented(input_c_complete_k)
-        data_d_k = readCsvSegmented(input_d_complete_k)
-        data_e_k = readCsvSegmented(input_e_complete_k)
-        data_a_p = readCsvSegmented(input_a_complete_p)
-        data_b_p = readCsvSegmented(input_b_complete_p)
-        data_c_p = readCsvSegmented(input_c_complete_p)
-        data_d_p = readCsvSegmented(input_d_complete_p)
-        data_e_p = readCsvSegmented(input_e_complete_p)
+                path_segmented = "%s/%s/%s-%s_%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, desc, turn)
 
-        # Get features
-        dataset.append(getFeatures(data_a_k, 0).tolist())
-        dataset.append(getFeatures(data_b_k, 1).tolist())
-        dataset.append(getFeatures(data_c_k, 2).tolist())
-        dataset.append(getFeatures(data_d_k, 3).tolist())
-        dataset.append(getFeatures(data_e_k, 4).tolist())
-        dataset.append(getFeatures(data_a_p, 0).tolist())
-        dataset.append(getFeatures(data_b_p, 1).tolist())
-        dataset.append(getFeatures(data_c_p, 2).tolist())
-        dataset.append(getFeatures(data_d_p, 3).tolist())
-        dataset.append(getFeatures(data_e_p, 4).tolist())
+                # Get data
+                data = readCsvSegmented(path_segmented)
 
-    ndataset =  np.array(dataset)
+                # Get features
+                dataset.append(getFeatures(data, classLetter).tolist())
+                print user, turn, letter, classLetter
+                classLetter += 1
+
+    ndataset = np.array(dataset)
     # print ndataset[:,64]
     return ndataset
 
