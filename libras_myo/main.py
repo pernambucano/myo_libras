@@ -6,12 +6,9 @@ import numpy as np
 import csv
 from printGraph import printGraph
 from calculateFeatures import getFeatures
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
-from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
-from sklearn.cross_validation import train_test_split
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
+from classification import classify
+
 
 user = "paulo"
 INPUT_TEST_WITHOUT_USER = "data/%s/%s-Teste_sem_usuario" % (user, user)# 3 x
@@ -151,42 +148,8 @@ def getAttributes():
     # print ndataset[:,64]
     return ndataset
 
-def feature_scaling(feature_matrix,target,reductor=None,scaler=None):
-    lda = LDA(n_components=2)
-    minmax = MinMaxScaler(feature_range=(-1,1))
-    if not reductor:
-        reductor = lda.fit(feature_matrix,target)
-    feat_lda = reductor.transform(feature_matrix)
-    if not scaler:
-        scaler = minmax.fit(feat_lda)
-    feat_lda_scaled = scaler.transform(feat_lda)
-
-    return feat_lda_scaled,reductor,scaler
 
 if __name__ == '__main__':
     segmentFiles()
     featureMatrix = getAttributes()
-
-    [X,reductor,scaler] = feature_scaling(featureMatrix[:, :63], featureMatrix[:, 64])
-    X_train, X_test, y_train, y_test = train_test_split(X, featureMatrix[:,64], test_size=0.2)
-    # X_train, X_test, y_train, y_test = train_test_split(featureMatrix[:,:63], featureMatrix[:,64], test_size=0.2)
-
-    # classifier = SVC(kernel='rbf', C=5, gamma=20)
-    classifier = RandomForestClassifier(max_depth=5, n_estimators=10)
-    classifier.fit(X_train, y_train)
-
-    # print classifier.predict(X_test[0])
-    # print y_test[0]
-    print classifier.score(X_test,y_test)
-    # print "Classification accuracy for SVC is %0.2f" % (100 * classifier.score(X_test, y_test))
-
-    # [X,reductor,scaler] = feature_scaling(featureMatrix[:, :63], featureMatrix[:, 64])
-    #
-    #
-    # plt.scatter(X[0:30:5,0],X[0:30:5,1],c='r', marker='o', label='A')
-    # plt.scatter(X[1:30:5,0],X[1:30:5,1],c='g', marker='>', label='B')
-    # plt.scatter(X[2:30:5,0],X[2:30:5,1],c='c', marker='x', label='C')
-    # plt.scatter(X[3:30:5,0],X[3:30:5,1],c='m', marker='+', label='D')
-    # plt.scatter(X[4:30:5,0],X[4:30:5,1],c='b', marker='<', label='E')
-    # plt.legend(scatterpoints=1,loc='center left', bbox_to_anchor=(1, 0.5))
-    # plt.show()
+    print classify(featureMatrix)

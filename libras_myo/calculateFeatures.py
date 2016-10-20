@@ -2,6 +2,19 @@ import numpy as np
 import nitime as nt
 from segmentData import getDataForSensor
 
+def feature_scaling(feature_matrix,target,reductor=None,scaler=None):
+    lda = LDA(n_components=2)
+    minmax = MinMaxScaler(feature_range=(-1,1))
+    if not reductor:
+        reductor = lda.fit(feature_matrix,target)
+    feat_lda = reductor.transform(feature_matrix)
+    if not scaler:
+        scaler = minmax.fit(feat_lda)
+    feat_lda_scaled = scaler.transform(feat_lda)
+
+    return feat_lda_scaled,reductor,scaler
+
+
 def readCsv(inputFileName):
 
     data = np.genfromtxt(inputFileName, delimiter=',', dtype=None)
