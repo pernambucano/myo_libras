@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 
-from segmentData import calculateAverageEnergy, segmentAveragedSignal, readCsv, writeDataInFile, segmentSensorsData
+from segmentData import calculateAverageEnergy, segmentAveragedSignal, readCsv, writeDataInFile, segmentSensorsData, segmentContinuousData
 import numpy as np
 import csv
 from printGraph import printGraph
@@ -9,23 +9,6 @@ from calculateFeatures import getFeatures
 import matplotlib.pyplot as plt
 from classification import classify
 
-
-user = "paulo"
-INPUT_TEST_WITHOUT_USER = "data/%s/%s-Teste_sem_usuario" % (user, user)  # 3 x
-INPUT_TEST_TR = "data/%s/%s-Teste_mao_esticada" % (user, user)  # 3 x
-INPUT_A = "data/%s/%s-A_perto_cotovelo" % (user, user)  # x 3
-INPUT_B = "data/%s/%s-B_perto_cotovelo" % (user, user)  # x 3
-INPUT_C = "data/%s/%s-C_perto_cotovelo" % (user, user)  # x 3
-INPUT_D = "data/%s/%s-D_perto_cotovelo" % (user, user)  # x 3
-INPUT_E = "data/%s/%s-E_perto_cotovelo" % (user, user)  # x 3
-OUTPUT = "data_segmented/%s" % user
-
-
-INPUT_A_SEGMENTED = "data_segmented/%s/%s-A_perto_cotovelo" % (user, user)
-INPUT_B_SEGMENTED = "data_segmented/%s/%s-B_perto_cotovelo" % (user, user)
-INPUT_C_SEGMENTED = "data_segmented/%s/%s-C_perto_cotovelo" % (user, user)
-INPUT_D_SEGMENTED = "data_segmented/%s/%s-D_perto_cotovelo" % (user, user)
-INPUT_E_SEGMENTED = "data_segmented/%s/%s-E_perto_cotovelo" % (user, user)
 
 
 letters = ['A', 'B', 'C', 'D', 'E']
@@ -54,6 +37,17 @@ def calculateTreshold(user):
     meanAveragedEmg = meanAveragedEmg / 3
     threshold = meanAveragedEmg * 0.05
     return threshold
+
+
+def segmentFile(path, user):
+    threshold = calculateTreshold(user)
+    data = readCsv(path)
+    averagedEmg = calculateAverageEnergy(data)
+    letterIndexes = segmentContinuousData(averagedEmg)
+
+    # TODO: Segmentar as letras / melhorar
+    print letterIndexes
+    print len(letterIndexes)
 
 
 def segmentFiles():
@@ -109,6 +103,7 @@ def getAttributes():
 
 
 if __name__ == '__main__':
-    segmentFiles()
-    featureMatrix = getAttributes()
-    print classify(featureMatrix)
+    # segmentFiles()
+    # featureMatrix = getAttributes()
+    # print classify(featureMatrix)
+    segmentFile("data/karla/karla-Alfabeto_inteiro-1-emg.csv", "karla")

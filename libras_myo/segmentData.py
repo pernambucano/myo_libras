@@ -13,6 +13,56 @@ OUTPUT_FILENAME = "data_segmented/karla-A_perto_cotovelo-1-emg-segmented.csv"
 OUTPUT_FILENAME_CUT = "data_segmented_cut/karla-A_perto_cotovelo-1-emg-segmented-cut.csv"
 
 
+def segmentContinuousData(averagedEmg, TR=135):
+    data = averagedEmg
+    listSize = len(data)
+
+    # Put zeroes everytime the data is smaller than the threshold
+    for item in xrange(0, listSize):
+        if data[item] < TR:
+            data[item] = 0
+
+    printGraphTest(data)
+    # Get the indices for the nonzero sequences
+    beforeCounter = 0
+    afterCounter = 0
+
+    mList = []
+    while beforeCounter < listSize and afterCounter < listSize:
+        start = 0
+        end = 0
+
+        if data[beforeCounter] != 0:
+            start = beforeCounter
+
+            afterCounter = beforeCounter
+            while afterCounter < listSize and data[afterCounter] != 0:
+                afterCounter += 1
+
+            beforeCounter = afterCounter
+
+            if afterCounter != 0:
+                afterCounter -= 1
+
+            end = afterCounter
+
+            mList.append([start, end])
+
+        else:
+            beforeCounter += 1
+
+    # get the sequence corresponding to the letter by calculating the difference
+    startOfLetter = 0
+    endOfLetter = 0
+
+    letterIndexes = []
+    for start, end in mList:
+        if (end - start) + 1 > 8:
+            startOfLetter = start
+            endOfLetter = end
+            letterIndexes.append([startOfLetter, endOfLetter])
+
+    return letterIndexes
 
 def segmentSensorsData(data, start, end):
     """
