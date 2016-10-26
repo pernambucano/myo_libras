@@ -12,11 +12,11 @@ from classification import classify
 
 
 letters = ['A', 'B', 'C', 'D', 'E']
-users = ['karla', 'paulo']
+users = ['karla', 'paulo', 'antonio', 'sylvia', 'bernardo', 'roniero', 'yanna']
 directory = "data"
 directorySegmented = "data_segmented"
 desc = "perto_cotovelo"
-
+## yanna-A-1-emg.csv
 
 def readCsvSegmented(inputFileName):
 
@@ -28,7 +28,7 @@ def calculateTreshold(user):
     meanAveragedEmg = 0
     for turn in xrange(1, 4):
         # input_test_tr_complete = '%s-%d-emg.csv' % (INPUT_TEST_TR, turn)
-        path = "%s/%s/%s-Teste_mao_esticada-%s-emg.csv" % (directory, user, user, turn)
+        path = "%s/%s/%s-Mao_esticada-%s-emg.csv" % (directory, user, user, turn)
         print path
         data = readCsv(path)
         averagedEmg = calculateAverageEnergy(data)
@@ -57,7 +57,7 @@ def segmentFiles():
         threshold = calculateTreshold(user) # Calcula o  threshold de cada usuário
         for turn in xrange(1, 4):
             for letter in letters:
-                path = "%s/%s/%s-%s_%s-%s-emg.csv" % (directory, user, user, letter, desc, turn)
+                path = "%s/%s/%s-%s-%s-emg.csv" % (directory, user, user, letter, turn)
 
                 print path
 
@@ -74,7 +74,7 @@ def segmentFiles():
                 data, startOfLetter, endOfLetter)
 
                 # # Save data in specific folder
-                path_segmented = "%s/%s/%s-%s_%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, desc, turn)
+                path_segmented = "%s/%s/%s-%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, turn)
 
                 writeDataInFile(data, path_segmented)
 
@@ -87,7 +87,7 @@ def getAttributes():
             classLetter = 0
             for letter in letters:
 
-                path_segmented = "%s/%s/%s-%s_%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, desc, turn)
+                path_segmented = "%s/%s/%s-%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, turn)
 
                 # Get data
                 data = readCsvSegmented(path_segmented)
@@ -103,7 +103,7 @@ def getAttributes():
 
 
 if __name__ == '__main__':
-    # segmentFiles()
-    # featureMatrix = getAttributes()
-    # print classify(featureMatrix)
-    segmentFile("data/karla/karla-Alfabeto_inteiro-1-emg.csv", "karla")
+    segmentFiles()
+    featureMatrix = getAttributes()
+    print classify(featureMatrix)
+    # segmentFile("data/karla/karla-Alfabeto_inteiro-1-emg.csv", "karla")
