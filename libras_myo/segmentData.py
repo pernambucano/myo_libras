@@ -6,11 +6,8 @@ import csv
 import matplotlib.pyplot as plt
 
 
-WINDOW_SIZE = 16  # 80 ms
-WINDOW_STEP = 8  # 50 ms
-INPUT_FILENAME = "data/karla/karla-A_perto_cotovelo-1-emg.csv"
-OUTPUT_FILENAME = "data_segmented/karla-A_perto_cotovelo-1-emg-segmented.csv"
-OUTPUT_FILENAME_CUT = "data_segmented_cut/karla-A_perto_cotovelo-1-emg-segmented-cut.csv"
+WINDOW_SIZE = 20  # 100 ms
+WINDOW_STEP = 5 # 25 ms
 
 
 def segmentContinuousData(averagedEmg, TR=135):
@@ -75,6 +72,32 @@ def segmentSensorsData(data, start, end):
     # print startIndex, endIndex
     result = []
     for sensorNumber in xrange(8):
+        sensorData = getDataForSensor(sensorNumber, data)
+        dataOfLetter = sensorData[startIndex:endIndex].tolist()
+        result.append(dataOfLetter)
+
+    return np.array(result).T.tolist()
+
+def segmentAccData(data, start, end):
+
+    # ACC data is 1/4 of EMG data.
+    # ACC data is at 50hz
+    # EMG data is at 200Hz
+    global WINDOW_STEP
+    # print "WS before : %s" % WINDOW_STEP
+    mWINDOW_STEP = WINDOW_STEP
+    mWINDOW_STEP = mWINDOW_STEP / 4
+    # print "WS After : %s" % WINDOW_STEP
+    # print "mWS  : %s" % mWINDOW_STEP
+
+
+
+    startIndex = (start - 1) * mWINDOW_STEP # Beginning of start window
+    endIndex = end * (mWINDOW_STEP + 1) # Ending of end window
+
+    result = []
+
+    for sensorNumber in xrange(3):
         sensorData = getDataForSensor(sensorNumber, data)
         dataOfLetter = sensorData[startIndex:endIndex].tolist()
         result.append(dataOfLetter)
@@ -200,9 +223,9 @@ def calculateAndSaveWindowValuesOfSensorInArray(windows):
     return dataWindowsSensorArray
 
 
-def readCsv(inputFileName=INPUT_FILENAME):
+def readCsv(inputFileName):
+    data = np.genfromtxt(inputFileName, delimiter=',', dtype=float)
 
-    data = np.genfromtxt(inputFileName, delimiter=',', dtype=None)
     data = data[:, 1:]  # We are not using the timestamp at this time
     return data
 
@@ -211,7 +234,7 @@ def getDataForSensor(sensorNumber, dataMatrix):
     return dataMatrix[:, sensorNumber]
 
 
-def writeDataInFile(data, output_filename=OUTPUT_FILENAME):
+def writeDataInFile(data, output_filename):
     with open(output_filename, 'wb') as outputFile:
         writer = csv.writer(outputFile)
         for i in data:
@@ -249,6 +272,9 @@ def slidingWindow(sequence):
     # Do the work
     for i in range(0, numOfChunks * window_step, window_step):
         yield sequence[i:i + window_size]
+
+    ## Test: Try separate windows
+
 
 
 def printGraphTest(sequence):

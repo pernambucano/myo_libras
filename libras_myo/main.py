@@ -1,35 +1,37 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 
-from segmentData import calculateAverageEnergy, segmentAveragedSignal, readCsv, writeDataInFile, segmentSensorsData, segmentContinuousData
+from segmentData import calculateAverageEnergy, segmentAveragedSignal, readCsv, writeDataInFile, segmentSensorsData, segmentContinuousData, segmentAccData
 import numpy as np
 import csv
-from printGraph import printGraph
-from calculateFeatures import getFeatures
+from calculateFeatures import getFeaturesEmg, getFeaturesAcc, getFeatures
 import matplotlib.pyplot as plt
 from classification import classify
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.preprocessing import MinMaxScaler
+import itertools
+
+# listOfLetters = ['A', 'B', 'C' , 'D', 'E', 'F' , 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V']
+# listOfLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N','O', 'P', 'Q', 'R']
+# listOfLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M']
+listOfLetters = ['A', 'B', 'C', 'D', 'E'] #
+# listOfLetters = ['A', 'B'] # n_estimators = 2, max_depth = 10
 
 
+users = ['yanna', 'antonio', 'bernardo', 'roniero', 'karla']
 
-letters = ['A', 'B', 'C', 'D', 'E']
-users = ['karla', 'paulo', 'antonio', 'sylvia', 'bernardo', 'roniero', 'yanna']
 directory = "data"
 directorySegmented = "data_segmented"
-desc = "perto_cotovelo"
-## yanna-A-1-emg.csv
 
 def readCsvSegmented(inputFileName):
 
-    data = np.genfromtxt(inputFileName, delimiter=',', dtype=None)
+    data = np.genfromtxt(inputFileName, delimiter=',')
     return data
-
 
 def calculateTreshold(user):
     meanAveragedEmg = 0
     for turn in xrange(1, 4):
-        # input_test_tr_complete = '%s-%d-emg.csv' % (INPUT_TEST_TR, turn)
         path = "%s/%s/%s-Mao_esticada-%s-emg.csv" % (directory, user, user, turn)
-        print path
         data = readCsv(path)
         averagedEmg = calculateAverageEnergy(data)
         meanAveragedEmg += np.amax(averagedEmg)
@@ -44,66 +46,83 @@ def segmentFile(path, user):
     data = readCsv(path)
     averagedEmg = calculateAverageEnergy(data)
     letterIndexes = segmentContinuousData(averagedEmg)
-
-    # TODO: Segmentar as letras / melhorar
     print letterIndexes
     print len(letterIndexes)
 
 
+
 def segmentFiles():
-
-
     for user in users:
         threshold = calculateTreshold(user) # Calcula o  threshold de cada usuário
         for turn in xrange(1, 4):
-            for letter in letters:
-                path = "%s/%s/%s-%s-%s-emg.csv" % (directory, user, user, letter, turn)
-
-                print path
+            for letter in listOfLetters:
+                pathEmg = "%s/%s/%s-%s-%s-emg.csv" % (directory, user, user, letter, turn)
+                pathAcc = "%s/%s/%s-%s-%s-acc.csv" % (directory, user, user, letter, turn)
+                # print path
 
                 # Get data
-                data = readCsv(path)
+                dataEmg = readCsv(pathEmg)
+
+                dataAcc = readCsv(pathAcc)
 
                 # Segment Data by Average EMG
-                averageEmg = calculateAverageEnergy(data)
+                averageEmg = calculateAverageEnergy(dataEmg)
 
                 startOfLetter, endOfLetter = segmentAveragedSignal(
                 averageEmg, threshold)
 
-                data_segmented = segmentSensorsData(
-                data, startOfLetter, endOfLetter)
+                # Segment ACC Data
+                data_segmented_acc = segmentAccData(dataAcc, startOfLetter, endOfLetter)
+
+                # Segment EMG Data
+                data_segmented_emg = segmentSensorsData(
+                dataEmg, startOfLetter, endOfLetter)
+
 
                 # # Save data in specific folder
-                path_segmented = "%s/%s/%s-%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, turn)
+                path_segmented_emg = "%s/%s/%s-%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, turn)
+                path_segmented_acc = "%s/%s/%s-%s-%s-acc-segmented.csv" % (directorySegmented, user, user, letter, turn)
 
-                writeDataInFile(data, path_segmented)
+                writeDataInFile(data_segmented_emg, path_segmented_emg)
+                writeDataInFile(data_segmented_acc, path_segmented_acc)
 
 
-def getAttributes():
+def getAttributes(listOfLetters):
+
 
     dataset = []
+
     for user in users:
         for turn in xrange(1, 4):
-            classLetter = 0
-            for letter in letters:
+                classLetter = 1
+                for letter in listOfLetters:
 
-                path_segmented = "%s/%s/%s-%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, turn)
+                    path_segmented_emg = "%s/%s/%s-%s-%s-emg-segmented.csv" % (directorySegmented, user, user, letter, turn)
+                    path_segmented_acc = "%s/%s/%s-%s-%s-acc-segmented.csv" % (directorySegmented, user, user, letter, turn)
 
-                # Get data
-                data = readCsvSegmented(path_segmented)
+                    # Get data
+                    data_emg = readCsvSegmented(path_segmented_emg)
+                    data_acc = readCsvSegmented(path_segmented_acc)
 
-                # Get features
-                dataset.append(getFeatures(data, classLetter).tolist())
-                print user, turn, letter, classLetter
-                classLetter += 1
+
+
+                    # Get features
+                    # dataset.append(getFeaturesEmg(data_emg, classLetter))
+                    # dataset.append(getFeaturesAcc(data_acc, classLetter))
+
+                    dataset.append(getFeatures(data_emg, data_acc, classLetter))
+
+                    classLetter += 1
+
+
 
     ndataset = np.array(dataset)
-    # print ndataset[:,64]
     return ndataset
 
-
 if __name__ == '__main__':
-    segmentFiles()
-    featureMatrix = getAttributes()
-    print classify(featureMatrix)
-    # segmentFile("data/karla/karla-Alfabeto_inteiro-1-emg.csv", "karla")
+    # segmentFiles()
+    featureMatrix = getAttributes(listOfLetters)
+    # writeDataInFile(featureMatrix, 'featureMatrix.csv')
+    classify(featureMatrix)
+    print "----------------"
+#
