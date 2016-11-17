@@ -36,9 +36,22 @@ def writeDataInFile(data, output_filename):
 
 def classify(featureMatrix):
     a,b = featureMatrix.shape
+    print a,b
     X, y = featureMatrix[:, :b-1], featureMatrix[:, b-1]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=30)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=33)
 
+    # scaller = MinMaxScaler().fit(X_train, y_train)
+    # lda = LDA(n_components=4).fit(X_train, y_train)
+    #
+    # X_train = scaller.transform(X_train)
+    # X_test = scaller.transform(X_test)
+
+    # X_train = lda.transform(X_train)
+    # X_test = lda.transform(X_test)
+
+    # print3D(X_train,y_train)
+
+    # fitting(X_train, y_train)
 
     # pca = PCA(n_components=2)
     # X_train_pca = pca.fit_transform(X_train)
@@ -49,31 +62,73 @@ def classify(featureMatrix):
     # plt.ylabel('PC 2')
     # plt.show()
 
-    # clf = RandomForestClassifier(n_estimators=250, max_depth=100)
+    # clf = RandomForestClassifier(n_estimators=50, max_depth=30)
     # clf.fit(X_train,y_train)
     # print clf.score(X_test, y_test)
 
-    # pipe_lr = Pipeline([('clf', RandomForestClassifier(n_estimators=250, max_depth=20, random_state=42))])
-    # #
+    # pipe_lr = Pipeline([('scl', StandardScaler()), ('clf', RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42))])
+    # # #
+    #
     # scores = cross_val_score(estimator=pipe_lr,
-    #                      X=X,
-    #                      y=y,
+    #                      X=X_train,
+    #                      y=y_train,
     #                      cv=10,
     #                      n_jobs=1,
     #                      verbose=1)
     #
     # print('CV accuracy scores: %s' % scores)
     # print('CV accuracy: %.3f +/- %.3f' % (np.mean(scores), np.std(scores)))
-    # pipe_lr.fit(X_train, y_train)
-    # print pipe_lr.score(X_test, y_test)
+
+
+    # pipe_lr.fit(X_train,y_train)
+    # pred = pipe_lr.predict(X_test)
+    # print accuracy_score(y_test, pred)
+    # fitting(X_train, y_train)
+
+    # diagnose_bias(X_train, y_train)
+    # clf = RandomForestClassifier(n_estimators=50, max_depth=10)
+    # clf.fit(X_train, y_train)
+    # print clf.score(X_test, y_test)
 
 
     # printGraph(X_train, y_train)
-    # diagnose_bias(X_train,y_train)
-    # fitting(X_train, y_train)
-    clf = RandomForestClassifier(n_estimators=350, max_depth=40, random_state=42)
 
+    X = StandardScaler().fit_transform(X)
+    # diagnose_bias(X,y)
+    # fitting(X, y)
+    print clas(featureMatrix)
+
+
+    clf = RandomForestClassifier(n_estimators=30, random_state=33)
+    # clf.fit(X_train, y_train)
+    # print clf.score(X_test, y_test)
+    #
     print(np.mean(cross_val_score(clf, X, y, cv=10)))
+
+#     listOfFeatures = [mav, var]
+#
+#
+# WINDOW_SIZE = 36  # 100 ms
+# WINDOW_STEP = 18# 25 ms
+#
+# X = StandardScaler().fit_transform(X)
+#     clf = RandomForestClassifier(n_estimators=40) # até 10 letras, depois, usar 100
+#     # clf.fit(X_train, y_train)
+#     # print clf.score(X_test, y_test)
+#     #
+#     print(np.mean(cross_val_score(clf, X, y, cv=10)))
+#
+# ~70
+#
+#
+# n_letras/ n_estimators  -
+#
+# 15 / 150 - 66%
+# 10/300 - 72%
+# 5/60 - 80%
+# 3/30 - 76%
+
+
 
     # param_range_estimators = [x for x in range(10,400,40)]
     # param_range_max_depth = [x for x in range(1,50,10)]
@@ -96,17 +151,46 @@ def classify(featureMatrix):
     # print(gs.best_score_)
     # print(gs.best_params_)
 
+
+def clas(featureMatrix):
+    # Train/Test using KFold cross validation
+    splitsNumber = 10
+    kf = KFold(n_splits=splitsNumber, shuffle=True, random_state=33)
+    mean = 0
+    for train_indices, test_indices  in kf.split(featureMatrix[:,:16], featureMatrix[:,16]):
+
+        features_train = [featureMatrix[ii, :16] for ii in train_indices]
+        features_test = [featureMatrix[ii, :16] for ii in test_indices]
+
+        classes_train = [featureMatrix[ii, 16] for ii in train_indices]
+        classes_test = [featureMatrix[ii, 16] for ii in test_indices]
+
+
+        # params = {'max_depth':[10,20], 'n_estimators':[10,50,100]}
+        # rfr = RandomForestClassifier()
+        # classifier = GridSearchCV(rfr, params)
+        # classifier.fit(features_train, classes_train)
+        # print classifier.best_params_
+
+        classifier = RandomForestClassifier(n_estimators=50)
+        classifier.fit(features_train, classes_train)
+
+        mean += classifier.score(features_test,classes_test)
+
+
+    return mean/splitsNumber
+
 def diagnose_bias(X_train, y_train):
     from sklearn.model_selection import learning_curve
 
-    pipe = Pipeline([('clf', RandomForestClassifier(n_estimators=250, max_depth=100))])
+    pipe = Pipeline([('clf', RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42))])
 
     train_sizes, train_scores, test_scores = \
                         learning_curve(estimator=pipe,
                                         X=X_train,
                                         y=y_train,
                                         train_sizes=np.linspace(0.1,1.0,10),
-                                        cv=5,
+                                        cv=10,
                                         n_jobs=1,
                                         verbose=10)
 
@@ -146,15 +230,15 @@ def diagnose_bias(X_train, y_train):
 
 
 def fitting(X_train, y_train):
-    clf = RandomForestClassifier(random_state=42, max_depth=10)
-    param_range = [x for x in range(1,100,10)]
+    clf = RandomForestClassifier(random_state=42)
+    param_range = [x for x in range(1,200,10)]
     train_scores, test_scores = validation_curve(
                     estimator=clf,
                     X=X_train,
                     y=y_train,
                     param_name='n_estimators',
                     param_range=param_range,
-                    cv=5,
+                    cv=10,
                     scoring = 'accuracy',
                     verbose=10)
 

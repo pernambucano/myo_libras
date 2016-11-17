@@ -132,7 +132,7 @@ def arc(segment):
     cf, var = nt.algorithms.autoregressive.AR_est_LD(segment, 4)
     return cf
 
-def getFeatures(dataEmg, dataAcc, letterClass):
+def getFeatures(dataEmg, letterClass):
     featuresEmg = getFeaturesEmg(dataEmg)
     # featuresAcc = getFeaturesAcc(dataAcc)
 
@@ -163,8 +163,10 @@ def ssc(x, threshold=30):
 
 def getFeaturesEmg(data):
 
-    nAtts =4
-    listOfFeatures = [mav,wamp, waveformLength]
+    nAtts = 2
+    listOfFeatures = [mav, var]
+    # listOfFeatures = [mav, var, rms, zc, arc]
+
     # 42
     features = np.zeros(nAtts*8)  #  attributes  + mav
     featureData = []

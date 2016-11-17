@@ -6,8 +6,8 @@ import csv
 import matplotlib.pyplot as plt
 
 
-WINDOW_SIZE = 20  # 100 ms
-WINDOW_STEP = 5 # 25 ms
+WINDOW_SIZE = 36  # 100 ms
+WINDOW_STEP = 18# 25 ms
 
 
 def segmentContinuousData(averagedEmg, TR=135):
