@@ -6,8 +6,8 @@ import csv
 import matplotlib.pyplot as plt
 
 
-WINDOW_SIZE = 36  # 100 ms
-WINDOW_STEP = 18# 25 ms
+WINDOW_SIZE = 36  # 180 ms, since EMG data is 200 HZ
+WINDOW_STEP = 18 # 90 ms, since EMG data is 200 HZ
 
 
 def segmentContinuousData(averagedEmg, TR=135):
@@ -233,7 +233,7 @@ def readCsv(inputFileName):
 def getDataForSensor(sensorNumber, dataMatrix):
     return dataMatrix[:, sensorNumber]
 
-
+# TODO: Put this function in a util.py file
 def writeDataInFile(data, output_filename):
     with open(output_filename, 'wb') as outputFile:
         writer = csv.writer(outputFile)
@@ -242,7 +242,7 @@ def writeDataInFile(data, output_filename):
 
 
 # slidingWindow
-# https://scipher.wordpress.com/2010/12/02/simple-sliding-window-iterator-in-python/
+# Taken from https://scipher.wordpress.com/2010/12/02/simple-sliding-window-iterator-in-python/
 def slidingWindow(sequence):
     """Returns a generator that will iterate through
     the defined chunks of input sequence.  Input sequence
@@ -272,8 +272,6 @@ def slidingWindow(sequence):
     # Do the work
     for i in range(0, numOfChunks * window_step, window_step):
         yield sequence[i:i + window_size]
-
-    ## Test: Try separate windows
 
 
 

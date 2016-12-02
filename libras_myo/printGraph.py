@@ -28,21 +28,7 @@ def print3D(X,labels):
 
 
 def printGraph(X,y):
-    # data = np.genfromtxt(filepath, delimiter=',', dtype=None)
-    # data = sequence[:, 1:]
-    # y = y[None].T
     y = np.array(y)[None].T
-
-
-    # classes = classes[...,None]
-    # print sequence[:,0]
-    # lda = LDA(n_components=2)
-    # sequence = lda.fit_transform(X, y)
-    # print sequence
-    # sequence = np.append(sequence[:,0],classes, 1)
-    # classes = y[:,0][None].T
-    # print data
-    # y = column_or_1d(y, warn=True)
     plt.axis([-100,100,-100,100])
     data = np.append(X, y, 1)
     print data

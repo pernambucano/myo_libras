@@ -1,254 +1,235 @@
-'''
-From https://gist.github.com/GaelVaroquaux/ead9898bd3c973c40429
-Non-parametric computation of entropy and mutual-information
-
-Adapted by G Varoquaux for code created by R Brette, itself
-from several papers (see in the code).
-
-These computations rely on nearest-neighbor statistics
-'''
 import numpy as np
-
-from scipy.special import gamma,psi
-from scipy import ndimage
-from scipy.linalg import det
-from numpy import pi
-
-from sklearn.neighbors import NearestNeighbors
-
-__all__=['entropy', 'mutual_information', 'entropy_gaussian']
-
-EPS = np.finfo(float).eps
+import matplotlib.pyplot as plt
+import warnings
 
 
-def nearest_distances(X, k=1):
-    '''
-    X = array(N,M)
-    N = number of points
-    M = number of dimensions
-
-    returns the distance to the kth nearest neighbor for every point in X
-    '''
-    knn = NearestNeighbors(n_neighbors=k)
-    knn.fit(X)
-    d, _ = knn.kneighbors(X) # the first nearest neighbor is itself
-    return d[:, -1] # returns the distance to the kth nearest neighbor
+def plot_venn_diagram():
+    fig, ax = plt.subplots(subplot_kw=dict(frameon=False, xticks=[], yticks=[]))
+    ax.add_patch(plt.Circle((0.3, 0.3), 0.3, fc='red', alpha=0.5))
+    ax.add_patch(plt.Circle((0.6, 0.3), 0.3, fc='blue', alpha=0.5))
+    ax.add_patch(plt.Rectangle((-0.1, -0.1), 1.1, 0.8, fc='none', ec='black'))
+    ax.text(0.2, 0.3, '$x$', size=30, ha='center', va='center')
+    ax.text(0.7, 0.3, '$y$', size=30, ha='center', va='center')
+    ax.text(0.0, 0.6, '$I$', size=30)
+    ax.axis('equal')
 
 
-def entropy_gaussian(C):
-    '''
-    Entropy of a gaussian variable with covariance matrix C
-    '''
-    if np.isscalar(C): # C is the variance
-        return .5*(1 + np.log(2*pi)) + .5*np.log(C)
-    else:
-        n = C.shape[0] # dimension
-        return .5*n*(1 + np.log(2*pi)) + .5*np.log(abs(det(C)))
+def plot_example_decision_tree():
+    fig = plt.figure(figsize=(10, 4))
+    ax = fig.add_axes([0, 0, 0.8, 1], frameon=False, xticks=[], yticks=[])
+    ax.set_title('Example Decision Tree: Animal Classification', size=24)
+
+    def text(ax, x, y, t, size=20, **kwargs):
+        ax.text(x, y, t,
+                ha='center', va='center', size=size,
+                bbox=dict(boxstyle='round', ec='k', fc='w'), **kwargs)
+
+    text(ax, 0.5, 0.9, "How big is\nthe animal?", 20)
+    text(ax, 0.3, 0.6, "Does the animal\nhave horns?", 18)
+    text(ax, 0.7, 0.6, "Does the animal\nhave two legs?", 18)
+    text(ax, 0.12, 0.3, "Are the horns\nlonger than 10cm?", 14)
+    text(ax, 0.38, 0.3, "Is the animal\nwearing a collar?", 14)
+    text(ax, 0.62, 0.3, "Does the animal\nhave wings?", 14)
+    text(ax, 0.88, 0.3, "Does the animal\nhave a tail?", 14)
+
+    text(ax, 0.4, 0.75, "> 1m", 12, alpha=0.4)
+    text(ax, 0.6, 0.75, "< 1m", 12, alpha=0.4)
+
+    text(ax, 0.21, 0.45, "yes", 12, alpha=0.4)
+    text(ax, 0.34, 0.45, "no", 12, alpha=0.4)
+
+    text(ax, 0.66, 0.45, "yes", 12, alpha=0.4)
+    text(ax, 0.79, 0.45, "no", 12, alpha=0.4)
+
+    ax.plot([0.3, 0.5, 0.7], [0.6, 0.9, 0.6], '-k')
+    ax.plot([0.12, 0.3, 0.38], [0.3, 0.6, 0.3], '-k')
+    ax.plot([0.62, 0.7, 0.88], [0.3, 0.6, 0.3], '-k')
+    ax.plot([0.0, 0.12, 0.20], [0.0, 0.3, 0.0], '--k')
+    ax.plot([0.28, 0.38, 0.48], [0.0, 0.3, 0.0], '--k')
+    ax.plot([0.52, 0.62, 0.72], [0.0, 0.3, 0.0], '--k')
+    ax.plot([0.8, 0.88, 1.0], [0.0, 0.3, 0.0], '--k')
+    ax.axis([0, 1, 0, 1])
 
 
-def entropy(X, k=1):
-    ''' Returns the entropy of the X.
+def visualize_tree(estimator, X, y, boundaries=True,
+                   xlim=None, ylim=None):
+    estimator.fit(X, y)
 
-    Parameters
-    ===========
+    if xlim is None:
+        xlim = (X[:, 0].min() - 0.1, X[:, 0].max() + 0.1)
+    if ylim is None:
+        ylim = (X[:, 1].min() - 0.1, X[:, 1].max() + 0.1)
 
-    X : array-like, shape (n_samples, n_features)
-        The data the entropy of which is computed
+    x_min, x_max = xlim
+    y_min, y_max = ylim
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 100),
+                         np.linspace(y_min, y_max, 100))
+    Z = estimator.predict(np.c_[xx.ravel(), yy.ravel()])
 
-    k : int, optional
-        number of nearest neighbors for density estimation
+    # Put the result into a color plot
+    Z = Z.reshape(xx.shape)
+    plt.figure()
+    plt.pcolormesh(xx, yy, Z, alpha=0.2, cmap='rainbow')
+    plt.clim(y.min(), y.max())
 
-    Notes
-    ======
+    # Plot also the training points
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='rainbow')
+    plt.axis('off')
 
-    Kozachenko, L. F. & Leonenko, N. N. 1987 Sample estimate of entropy
-    of a random vector. Probl. Inf. Transm. 23, 95-101.
-    See also: Evans, D. 2008 A computationally efficient estimator for
-    mutual information, Proc. R. Soc. A 464 (2093), 1203-1215.
-    and:
-    Kraskov A, Stogbauer H, Grassberger P. (2004). Estimating mutual
-    information. Phys Rev E 69(6 Pt 2):066138.
-    '''
+    plt.xlim(x_min, x_max)
+    plt.ylim(y_min, y_max)
+    plt.clim(y.min(), y.max())
 
-    # Distance to kth nearest neighbor
-    r = nearest_distances(X, k) # squared distances
-    n, d = X.shape
-    volume_unit_ball = (pi**(.5*d)) / gamma(.5*d + 1)
-    '''
-    F. Perez-Cruz, (2008). Estimation of Information Theoretic Measures
-    for Continuous Random Variables. Advances in Neural Information
-    Processing Systems 21 (NIPS). Vancouver (Canada), December.
+    # Plot the decision boundaries
+    def plot_boundaries(i, xlim, ylim):
+        if i < 0:
+            return
 
-    return d*mean(log(r))+log(volume_unit_ball)+log(n-1)-log(k)
-    '''
-    return (d*np.mean(np.log(r + np.finfo(X.dtype).eps))
-            + np.log(volume_unit_ball) + psi(n) - psi(k))
+        tree = estimator.tree_
 
+        if tree.feature[i] == 0:
+            plt.plot([tree.threshold[i], tree.threshold[i]], ylim, '-k')
+            plot_boundaries(tree.children_left[i],
+                            [xlim[0], tree.threshold[i]], ylim)
+            plot_boundaries(tree.children_right[i],
+                            [tree.threshold[i], xlim[1]], ylim)
 
-def mutual_information(variables, k=1):
-    '''
-    Returns the mutual information between any number of variables.
-    Each variable is a matrix X = array(n_samples, n_features)
-    where
-      n = number of samples
-      dx,dy = number of dimensions
+        elif tree.feature[i] == 1:
+            plt.plot(xlim, [tree.threshold[i], tree.threshold[i]], '-k')
+            plot_boundaries(tree.children_left[i], xlim,
+                            [ylim[0], tree.threshold[i]])
+            plot_boundaries(tree.children_right[i], xlim,
+                            [tree.threshold[i], ylim[1]])
 
-    Optionally, the following keyword argument can be specified:
-      k = number of nearest neighbors for density estimation
+    if boundaries:
+        plot_boundaries(0, plt.xlim(), plt.ylim())
 
-    Example: mutual_information((X, Y)), mutual_information((X, Y, Z), k=5)
-    '''
-    if len(variables) < 2:
-        raise AttributeError(
-                "Mutual information must involve at least 2 variables")
-    all_vars = np.hstack(variables)
-    return (sum([entropy(X, k=k) for X in variables])
-            - entropy(all_vars, k=k))
+    plt.show()
 
 
-def mutual_information_2d(x, y, sigma=1, normalized=False):
-    """
-    Computes (normalized) mutual information between two 1D variate from a
-    joint histogram.
+def plot_tree_interactive(X, y):
+    from sklearn.tree import DecisionTreeClassifier
 
-    Parameters
-    ----------
-    x : 1D array
-        first variable
+    def interactive_tree(depth=1):
+        clf = DecisionTreeClassifier(max_depth=depth, random_state=0)
+        visualize_tree(clf, X, y)
 
-    y : 1D array
-        second variable
-
-    sigma: float
-        sigma for Gaussian smoothing of the joint histogram
-
-    Returns
-    -------
-    nmi: float
-        the computed similariy measure
-
-    """
-    bins = (256, 256)
-
-    jh = np.histogram2d(x, y, bins=bins)[0]
-
-    # smooth the jh with a gaussian filter of given sigma
-    ndimage.gaussian_filter(jh, sigma=sigma, mode='constant',
-                                 output=jh)
-
-    # compute marginal histograms
-    jh = jh + EPS
-    sh = np.sum(jh)
-    jh = jh / sh
-    s1 = np.sum(jh, axis=0).reshape((-1, jh.shape[0]))
-    s2 = np.sum(jh, axis=1).reshape((jh.shape[1], -1))
-
-    # Normalised Mutual Information of:
-    # Studholme,  jhill & jhawkes (1998).
-    # "A normalized entropy measure of 3-D medical image alignment".
-    # in Proc. Medical Imaging 1998, vol. 3338, San Diego, CA, pp. 132-143.
-    if normalized:
-        mi = ((np.sum(s1 * np.log(s1)) + np.sum(s2 * np.log(s2)))
-                / np.sum(jh * np.log(jh))) - 1
-    else:
-        mi = ( np.sum(jh * np.log(jh)) - np.sum(s1 * np.log(s1))
-               - np.sum(s2 * np.log(s2)))
-
-    return mi
+    from IPython.html.widgets import interact
+    return interact(interactive_tree, depth=[1, 5])
 
 
+def plot_kmeans_interactive(min_clusters=1, max_clusters=6):
+    from IPython.html.widgets import interact
+    from sklearn.metrics.pairwise import euclidean_distances
+    from sklearn.datasets.samples_generator import make_blobs
 
-###############################################################################
-# Tests
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore')
 
-def test_entropy():
-    # Testing against correlated Gaussian variables
-    # (analytical results are known)
-    # Entropy of a 3-dimensional gaussian variable
-    rng = np.random.RandomState(0)
-    n = 50000
-    d = 3
-    P = np.array([[1, 0, 0], [0, 1, .5], [0, 0, 1]])
-    C = np.dot(P, P.T)
-    Y = rng.randn(d, n)
-    X = np.dot(P, Y)
-    H_th = entropy_gaussian(C)
-    H_est = entropy(X.T, k=5)
-    # Our estimated entropy should always be less that the actual one
-    # (entropy estimation undershoots) but not too much
-    np.testing.assert_array_less(H_est, H_th)
-    np.testing.assert_array_less(.9*H_th, H_est)
+        X, y = make_blobs(n_samples=300, centers=4,
+                          random_state=0, cluster_std=0.60)
 
+        def _kmeans_step(frame=0, n_clusters=4):
+            rng = np.random.RandomState(2)
+            labels = np.zeros(X.shape[0])
+            centers = rng.randn(n_clusters, 2)
 
-def test_mutual_information():
-    # Mutual information between two correlated gaussian variables
-    # Entropy of a 2-dimensional gaussian variable
-    n = 50000
-    rng = np.random.RandomState(0)
-    #P = np.random.randn(2, 2)
-    P = np.array([[1, 0], [0.5, 1]])
-    C = np.dot(P, P.T)
-    U = rng.randn(2, n)
-    Z = np.dot(P, U).T
-    X = Z[:, 0]
-    X = X.reshape(len(X), 1)
-    Y = Z[:, 1]
-    Y = Y.reshape(len(Y), 1)
-    # in bits
-    MI_est = mutual_information((X, Y), k=5)
-    MI_th = (entropy_gaussian(C[0, 0])
-             + entropy_gaussian(C[1, 1])
-             - entropy_gaussian(C)
-            )
-    # Our estimator should undershoot once again: it will undershoot more
-    # for the 2D estimation that for the 1D estimation
-    print  MI_est, MI_th
-    np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est  + .3)
+            nsteps = frame // 3
+
+            for i in range(nsteps + 1):
+                old_centers = centers
+                if i < nsteps or frame % 3 > 0:
+                    dist = euclidean_distances(X, centers)
+                    labels = dist.argmin(1)
+
+                if i < nsteps or frame % 3 > 1:
+                    centers = np.array([X[labels == j].mean(0)
+                                        for j in range(n_clusters)])
+                    nans = np.isnan(centers)
+                    centers[nans] = old_centers[nans]
 
 
-def test_degenerate():
-    # Test that our estimators are well-behaved with regards to
-    # degenerate solutions
-    rng = np.random.RandomState(0)
-    x = rng.randn(50000)
-    X = np.c_[x, x]
-    assert np.isfinite(entropy(X))
-    assert np.isfinite(mutual_information((x[:, np.newaxis],
-                                           x[:,  np.newaxis])))
-    assert 2.9 < mutual_information_2d(x, x) < 3.1
+            # plot the data and cluster centers
+            plt.scatter(X[:, 0], X[:, 1], c=labels, s=50, cmap='rainbow',
+                        vmin=0, vmax=n_clusters - 1);
+            plt.scatter(old_centers[:, 0], old_centers[:, 1], marker='o',
+                        c=np.arange(n_clusters),
+                        s=200, cmap='rainbow')
+            plt.scatter(old_centers[:, 0], old_centers[:, 1], marker='o',
+                        c='black', s=50)
+
+            # plot new centers if third frame
+            if frame % 3 == 2:
+                for i in range(n_clusters):
+                    plt.annotate('', centers[i], old_centers[i],
+                                 arrowprops=dict(arrowstyle='->', linewidth=1))
+                plt.scatter(centers[:, 0], centers[:, 1], marker='o',
+                            c=np.arange(n_clusters),
+                            s=200, cmap='rainbow')
+                plt.scatter(centers[:, 0], centers[:, 1], marker='o',
+                            c='black', s=50)
+
+            plt.xlim(-4, 4)
+            plt.ylim(-2, 10)
+
+            if frame % 3 == 1:
+                plt.text(3.8, 9.5, "1. Reassign points to nearest centroid",
+                         ha='right', va='top', size=14)
+            elif frame % 3 == 2:
+                plt.text(3.8, 9.5, "2. Update centroids to cluster means",
+                         ha='right', va='top', size=14)
 
 
-def test_mutual_information_2d():
-    # Mutual information between two correlated gaussian variables
-    # Entropy of a 2-dimensional gaussian variable
-    n = 50000
-    rng = np.random.RandomState(0)
-    #P = np.random.randn(2, 2)
-    P = np.array([[1, 0], [.9, .1]])
-    C = np.dot(P, P.T)
-    U = rng.randn(2, n)
-    Z = np.dot(P, U).T
-    X = Z[:, 0]
-    X = X.reshape(len(X), 1)
-    Y = Z[:, 1]
-    Y = Y.reshape(len(Y), 1)
-    # in bits
-    MI_est = mutual_information_2d(X.ravel(), Y.ravel())
-    MI_th = (entropy_gaussian(C[0, 0])
-             + entropy_gaussian(C[1, 1])
-             - entropy_gaussian(C)
-            )
-    print  MI_est, MI_th
-    # Our estimator should undershoot once again: it will undershoot more
-    # for the 2D estimation that for the 1D estimation
-    np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est  + .2)
+    return interact(_kmeans_step, frame=[0, 50],
+                    n_clusters=[min_clusters, max_clusters])
 
 
-if __name__ == '__main__':
-    # Run our tests
-    test_entropy()
-    test_mutual_information()
-    test_degenerate()
-    test_mutual_information_2d()
+def plot_image_components(x, coefficients=None, mean=0, components=None,
+                          imshape=(8, 8), n_components=6, fontsize=12):
+    if coefficients is None:
+        coefficients = x
+
+    if components is None:
+        components = np.eye(len(coefficients), len(x))
+
+    mean = np.zeros_like(x) + mean
+
+
+    fig = plt.figure(figsize=(1.2 * (5 + n_components), 1.2 * 2))
+    g = plt.GridSpec(2, 5 + n_components, hspace=0.3)
+
+    def show(i, j, x, title=None):
+        ax = fig.add_subplot(g[i, j], xticks=[], yticks=[])
+        ax.imshow(x.reshape(imshape), interpolation='nearest')
+        if title:
+            ax.set_title(title, fontsize=fontsize)
+
+    show(slice(2), slice(2), x, "True")
+
+    approx = mean.copy()
+    show(0, 2, np.zeros_like(x) + mean, r'$\mu$')
+    show(1, 2, approx, r'$1 \cdot \mu$')
+
+    for i in range(0, n_components):
+        approx = approx + coefficients[i] * components[i]
+        show(0, i + 3, components[i], r'$c_{0}$'.format(i + 1))
+        show(1, i + 3, approx,
+             r"${0:.2f} \cdot c_{1}$".format(coefficients[i], i + 1))
+        plt.gca().text(0, 1.05, '$+$', ha='right', va='bottom',
+                       transform=plt.gca().transAxes, fontsize=fontsize)
+
+    show(slice(2), slice(-2, None), approx, "Approx")
+
+
+def plot_pca_interactive(data, n_components=6):
+    from sklearn.decomposition import PCA
+    from IPython.html.widgets import interact
+
+    pca = PCA(n_components=n_components)
+    Xproj = pca.fit_transform(data)
+
+    def show_decomp(i=0):
+        plot_image_components(data[i], Xproj[i],
+                              pca.mean_, pca.components_)
+
+    interact(show_decomp, i=(0, data.shape[0] - 1));

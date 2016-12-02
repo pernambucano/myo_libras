@@ -211,7 +211,6 @@ def main(args):
 
 
 def runArgs(args):
-
     nameOfFileEmg = "%s-%s-%s-emg.csv" % (args.user, (args.letter).capitalize(), args.turn)
     nameOfFileOrientation = "%s-%s-%s-orientation.csv" % (args.user, (args.letter).capitalize(), args.turn)
     nameOfFileAccelerometor = "%s-%s-%s-acc.csv" % (args.user, (args.letter).capitalize(), args.turn)
@@ -222,5 +221,4 @@ if __name__ == '__main__':
     parser.add_argument("letter", help="The letter the user is doing.")
     parser.add_argument("turn", help="The number of the turn.")
     args = parser.parse_args()
-    # runArgs(args)
     main(args)

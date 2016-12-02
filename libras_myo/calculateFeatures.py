@@ -6,17 +6,14 @@ from util import entropy
 from scipy.stats import kurtosis
 
 
-def feature_scaling(feature_matrix,target,reductor=None,scaler=None):
-    lda = LDA(n_components=2)
-    minmax = MinMaxScaler(feature_range=(-1,1))
-    if not reductor:
-        reductor = lda.fit(feature_matrix,target)
-    feat_lda = reductor.transform(feature_matrix)
-    if not scaler:
-        scaler = minmax.fit(feat_lda)
-    feat_lda_scaled = scaler.transform(feat_lda)
+# Put this function in a util.py file
+def readCsv(inputFileName):
+    data = np.genfromtxt(inputFileName, delimiter=',', dtype=None)
+    return data
 
-    return feat_lda_scaled,reductor,scaler
+
+## Many of these feature functions were taken from 
+# https://github.com/RamanSinghca/MultiChannelMYOGestureClassification/blob/master/EMGFeatureExtraction.py
 
 
 # Waveform Length
@@ -29,11 +26,6 @@ def waveformLength(x):
         tempVal=tempVal+np.absolute(nextEle-currentEle)
     finalVal=tempVal
     return finalVal
-
-def readCsv(inputFileName):
-
-    data = np.genfromtxt(inputFileName, delimiter=',', dtype=None)
-    return data
 
 #Willison Amplitude
 def wamp(x, threshold=30):
@@ -134,15 +126,7 @@ def arc(segment):
 
 def getFeatures(dataEmg, letterClass):
     featuresEmg = getFeaturesEmg(dataEmg)
-    # featuresAcc = getFeaturesAcc(dataAcc)
-
-
-    # features = np.hstack((featuresEmg, featuresAcc))
-    # features = np.hstack((features, letterClass))
-
     features = np.hstack((featuresEmg, letterClass))
-    # print features
-
     return features
 
 #Slope Sign change
@@ -160,79 +144,53 @@ def ssc(x, threshold=30):
     return finalVal
 
 
-
 def getFeaturesEmg(data):
-
-    nAtts = 2
-    listOfFeatures = [mav, var]
-    # listOfFeatures = [mav, var, rms, zc, arc]
-
-    # 42
-    features = np.zeros(nAtts*8)  #  attributes  + mav
+    nAttributes = 3
+    listOfFeatures = [mav, var, wamp]
+    features = np.zeros(nAttributes*8)  
     featureData = []
     n = 0
 
     allChannels = []
     for channel in range(8):
         allChannels.append(channel)
-        # print channel
         sensorData = getDataForSensor(channel, data)
         for feature in listOfFeatures:
-            # print feature
             if feature == arc:
-                # print 'it\'s arc'
                 c1, c2, c3, c4 = feature(sensorData)
                 features[n] = c1
                 features[n + 1] = c2
                 features[n + 2] = c3
                 features[n + 3] = c4
-
                 n += 4
             else:
                 features[n] = feature(sensorData)
                 n+=1
-
     return features
 
 def getFeaturesAcc(data):
-    # Possible features:
-    # mean values
-    #
+    nAtts = 4
+    listOfFeatures = [mav, mean, var, ssi]
 
-
-    nAtts = 12
-    listOfFeatures = [mav, mean,arc, zc,rms, var, entropy, kurtosis, std]
-
-    features = np.zeros(nAtts*3)  #  attributes +  1 class
+    features = np.zeros(nAtts*3)
     featureData = []
     n = 0
 
     allChannels = []
     for channel in range(3):
         sensorData = getDataForSensor(channel, data)
-        # sensorDataNormalized = MinMaxScaler().fit_transform(data)
-        # sensorData = getDataForSensor(channel, data)
         for feature in listOfFeatures:
-            # print feature
             if feature == arc:
-                # print 'it\'s arc'
                 c1, c2, c3, c4 = feature(sensorData)
                 features[n] = c1
                 features[n + 1] = c2
                 features[n + 2] = c3
                 features[n + 3] = c4
                 n += 4
-            elif feature == entropy:
-
-                # print sensorData.shape
-                # features[n] = feature(data.T)
-                n += 1
-
             else:
                 features[n] = feature(sensorData)
                 n+=1
     return features
-
 
 
 if __name__ == '__main__':

@@ -5,17 +5,17 @@ from segmentData import calculateAverageEnergy, segmentAveragedSignal, readCsv, 
 import numpy as np
 import csv
 from calculateFeatures import getFeaturesEmg, getFeaturesAcc, getFeatures
-import matplotlib.pyplot as plt
 from classification import classify
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.preprocessing import MinMaxScaler
 import itertools
 
-# listOfLetters = ['A', 'B', 'C' , 'D', 'E', 'F' , 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V']
-# listOfLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N','O', 'P', 'Q', 'R']
+# listOfLetters = ['A', 'B', 'C' , 'D', 'E', 'F' , 'I', 'L', 'M',
+# 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V']
+listOfLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'N','O', 'P', 'Q', 'R']
 # listOfLetters = ['A', 'B', 'C', 'D', 'E', 'G', 'I', 'L', 'M', 'O']
-# listOfLetters = ['A', 'B', 'C', 'D', 'E'] #
-listOfLetters = ['A', 'B', 'C'] # n_estimators = 2, max_depth = 10
+# listOfLetters = ['A', 'B', 'C', 'D', 'E']
+# listOfLetters = ['A', 'B', 'C'] # n_estimators = 2, max_depth = 10
 
 
 users = ['yanna', 'antonio', 'bernardo', 'roniero', 'karla']
@@ -30,45 +30,37 @@ def readCsvSegmented(inputFileName):
 
 def calculateTreshold(user):
     meanAveragedEmg = 0
-    if user != 'johnathan':
-        for turn in xrange(1, 4):
-            path = "%s/%s/%s-Mao_esticada-%s-emg.csv" % (directory, user, user, turn)
-            data = readCsv(path)
-            averagedEmg = calculateAverageEnergy(data)
-            meanAveragedEmg += np.amax(averagedEmg)
+    for turn in xrange(1, 4):
+        path = "%s/%s/%s-Mao_esticada-%s-emg.csv" % (directory, user, user, turn)
+        data = readCsv(path)
+        averagedEmg = calculateAverageEnergy(data)
+        meanAveragedEmg += np.amax(averagedEmg)
 
-        meanAveragedEmg = meanAveragedEmg / 3
-        threshold = meanAveragedEmg * 0.05
-        return threshold
-    elif user == 'johnathan':
-        return 0
+    meanAveragedEmg = meanAveragedEmg / 3
+    threshold = meanAveragedEmg * 0.05
+    print "%s, %s" % (user, threshold)
+    return threshold
 
-def segmentFile(path, user):
-    threshold = calculateTreshold(user)
-    data = readCsv(path)
-    averagedEmg = calculateAverageEnergy(data)
-    letterIndexes = segmentContinuousData(averagedEmg)
-    print letterIndexes
-    print len(letterIndexes)
-
-
-
+# TODO: Some letters ( yanna - F1, S1, bernardo - F1) can't be properly segmented and needed
+#       to be filled with data from other repetitions
 def segmentFiles():
     for user in users:
         threshold = calculateTreshold(user) # Calcula o  threshold de cada usuário
         for turn in xrange(1, 4):
             for letter in listOfLetters:
                 pathEmg = "%s/%s/%s-%s-%s-emg.csv" % (directory, user, user, letter, turn)
-                pathAcc = "%s/%s/%s-%s-%s-acc.csv" % (directory, user, user, letter, turn)
+                # pathAcc = "%s/%s/%s-%s-%s-acc.csv" % (directory, user, user, letter, turn)
+                pathAvgEmg = "%s/%s/%s-%s-%s-avg.csv" % (directory, user, user, letter, turn)
                 # print path
 
                 # Get data
                 dataEmg = readCsv(pathEmg)
-
                 # dataAcc = readCsv(pathAcc)
 
                 # Segment Data by Average EMG
                 averageEmg = calculateAverageEnergy(dataEmg)
+
+                writeDataInFile([averageEmg], pathAvgEmg)
 
                 startOfLetter, endOfLetter = segmentAveragedSignal(
                 averageEmg, threshold)
@@ -90,8 +82,6 @@ def segmentFiles():
 
 
 def getAttributes(listOfLetters):
-
-
     dataset = []
 
     for user in users:
@@ -106,13 +96,9 @@ def getAttributes(listOfLetters):
                     data_emg = readCsvSegmented(path_segmented_emg)
                     # data_acc = readCsvSegmented(path_segmented_acc)
 
-
-
                     # Get features
-                    # dataset.append(getFeaturesEmg(data_emg, classLetter))
-                    # dataset.append(getFeaturesAcc(data_acc, classLetter))
-
-                    dataset.append(getFeatures(data_emg, classLetter))
+                    # dataset.append(getFeatures(data_emg,data_acc,  classLetter))
+                    dataset.append(getFeatures(data_emg,classLetter))
 
                     classLetter += 1
 
@@ -122,9 +108,8 @@ def getAttributes(listOfLetters):
     return ndataset
 
 if __name__ == '__main__':
-    # segmentFiles()
+    # segmentFiles() # Do this only once because it takes too much time
     featureMatrix = getAttributes(listOfLetters)
-    # writeDataInFile(featureMatrix, 'featureMatrix.csv')
+    writeDataInFile(featureMatrix, 'featureMatrix.csv')
     classify(featureMatrix)
     print "----------------"
-#
