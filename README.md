@@ -13,6 +13,19 @@ O comando abaixo deverá retornar a porcentagem de acerto para 15 letras se nada
 $ python main.py
 ```
 
+O arquivo receiveData.py é responsável pela coleta dos dados. Ao se utilizar o comando abaixo, os dados do Myo irão ser coletados e salvos em um arquivo chamado paulo-A-1-emg.csv na pasta "data/paulo". Onde 'a' é a letra a ser realizada e 1 representa que essa é a primeira vez que essa letra é realizada.
+
+```
+$ python receiveData.py 'paulo' a 1
+```
+
+Para segmentar os dados de letra utilizamos os métodos presentes no arquivo segmentData.py. O método presente no arquivo main.py ~segmentFiles~
+detecta os arquivos salvos dentro de ~data~, segmenta e em seguida salva-os dentro da pasta ~data_segmented~.
+
+Para extrair as características dos dados segmentados, utilizamos o método getFeaturesEmg(data) do arquivo calculateFeatures.py. data representa os dados segmentados resultantes do passo anterior.
+
+Por último, classificamos os dados utilizando o método classify do arquivo classification.py. Esse método recebe a matriz de características e retorna o índice de classificação para aquele grupo de letras.
+
 ### Prerequisites
 
 Todas as dependências necessárias estão presentes no arquivo requirements.txt e podem ser automaticamente baixadas e instaladas utilizando o seguinte comando:
@@ -21,55 +34,21 @@ Todas as dependências necessárias estão presentes no arquivo requirements.txt
 $ conda create --name <env> --file requirements.txt
 ```
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [scikit-learn](scikit-learn.org/) 
+* [pandas](pandas.pydata.org)
+* [myo-python](https://github.com/NiklasRosenstein/myo-python)
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Paulo Fernandes** - *Initial work* - [Pernambucano](https://github.com/pernambucano)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+## Agradecimentos
+
+* Meus orientadores, Prof. Ricardo Prudêncio e Profa. Veronica Teichrieb
+* Todos os que participaram direta ou indiretamente na produção deste projeto até agora.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
