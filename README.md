@@ -39,6 +39,7 @@ $ conda create --name <env> --file requirements.txt
 * [scikit-learn](scikit-learn.org/) 
 * [pandas](pandas.pydata.org)
 * [myo-python](https://github.com/NiklasRosenstein/myo-python)
+* [myo-python](https://github.com/NiklasRosenstein/myo-python)
 
 ## Authors
 
